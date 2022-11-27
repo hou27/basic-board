@@ -45,7 +45,8 @@ class ArticleControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.TEXT_HTML))
         .andExpect(view().name("articles/detail"))
-        .andExpect(model().attributeExists("article"));
+        .andExpect(model().attributeExists("article"))
+        .andExpect(model().attributeExists("comments"));
   }
 
   @Disabled("구현 중")
