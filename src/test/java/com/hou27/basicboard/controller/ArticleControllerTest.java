@@ -21,7 +21,6 @@ class ArticleControllerTest {
     this.mvc = mvc;
   }
 
-  @Disabled("구현 중")
   @DisplayName("[view] GET 게시글 리스트 - 정상 호출되어야 한다.")
   @Test
   public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
