@@ -7,6 +7,18 @@
 # Querydsl
 /src/main/generated
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
 # Created by https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle,intellij+all,windows,macos
 
