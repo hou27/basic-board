@@ -41,6 +41,10 @@ dependencies {
 
     // view를 위한 thymeleaf 설정
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // security 설정
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 }
 
 tasks.named('test') {
