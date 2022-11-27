@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hou27.basicboard.config.JpaConfig;
+import com.hou27.basicboard.domain.Account;
 import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.Comment;
 import java.util.List;
@@ -21,13 +22,16 @@ class JpaRepositoryTest {
   // 생성자 주입 패턴을 통한 필드 생성
   private final ArticleRepository articleRepository;
   private final CommentRepository commentRepository;
+  private final AccountRepository accountRepository;
 
   public JpaRepositoryTest(
       @Autowired ArticleRepository articleRepository,
-      @Autowired CommentRepository commentRepository
+      @Autowired CommentRepository commentRepository,
+      @Autowired AccountRepository accountRepository
   ) {
     this.articleRepository = articleRepository;
     this.commentRepository = commentRepository;
+    this.accountRepository = accountRepository;
   }
 
   @DisplayName("select Test")
@@ -45,7 +49,7 @@ class JpaRepositoryTest {
         .hasSize(100);
     assertThat(comments)
         .isNotNull()
-        .hasSize(100);
+        .hasSize(200);
   }
 
   @DisplayName("insert Test")
@@ -53,9 +57,11 @@ class JpaRepositoryTest {
   void insert() {
     // Given
     long previousCount = articleRepository.count();
+    Account account = accountRepository.save(Account.of("test@gmail.com", "hou27", "pw"));
+    Article article = Article.of("title", "new article", account, "#spring");
 
     // When
-    articleRepository.save(Article.of("new article", "new content", "#spring"));
+    articleRepository.save(Article.of("new article", "new content", account, "#spring"));
 
     // Then
     assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
