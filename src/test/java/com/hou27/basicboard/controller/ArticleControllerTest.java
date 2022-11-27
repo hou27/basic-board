@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @DisplayName("View - Article Controller Test")
-@WebMvcTest
+@WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
   private final MockMvc mvc;
 
