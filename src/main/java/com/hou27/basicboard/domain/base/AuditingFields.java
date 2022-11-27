@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
-public class AuditingFields {
+public abstract class AuditingFields {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
