@@ -1,11 +1,15 @@
 package com.hou27.basicboard.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.*;
 
 import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.ArticleDto;
+import com.hou27.basicboard.dto.ArticleUpdateDto;
 import com.hou27.basicboard.repository.ArticleRepository;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
@@ -48,5 +53,44 @@ class ArticleServiceTest {
 
     // Then
     assertThat(articles).isNotNull();
+  }
+
+  @DisplayName("게시글 정보를 입력하면, 게시글을 생성한다")
+  @Test
+  void givenArticleInfo_whenSavingArticle_thenSavesArticle() {
+    // Given
+    given(articleRepository.save(any(Article.class))).willReturn(null);
+
+    // When
+    sut.saveArticle(ArticleDto.of(LocalDateTime.now(), "hou27", "title", "content", "#java"));
+
+    // Then
+    then(articleRepository).should().save(any(Article.class));
+  }
+
+  @DisplayName("게시글의 ID와 수정 정보를 입력하면, 게시글을 수정한다")
+  @Test
+  void givenArticleIdAndModifiedInfo_whenUpdatingArticle_thenUpdatesArticle() {
+    // Given
+    given(articleRepository.save(any(Article.class))).willReturn(null);
+
+    // When
+    sut.updateArticle(1L, ArticleUpdateDto.of("title", "content", "#java"));
+
+    // Then
+    then(articleRepository).should().save(any(Article.class));
+  }
+
+  @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다")
+  @Test
+  void givenArticleId_whenDeletingArticle_thenDeletesArticle() {
+    // Given
+    willDoNothing().given(articleRepository).delete(any(Article.class));
+
+    // When
+    sut.deleteArticle(1L);
+
+    // Then
+    then(articleRepository).should().delete(any(Article.class));
   }
 }

@@ -2,6 +2,7 @@ package com.hou27.basicboard.service;
 
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.ArticleDto;
+import com.hou27.basicboard.dto.ArticleUpdateDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,14 @@ public class ArticleService {
   @Transactional(readOnly = true)
   public ArticleDto searchArticle(long l) {
     return null;
+  }
+
+  public void saveArticle(ArticleDto dto) {
+  }
+
+  public void updateArticle(long articleId, ArticleUpdateDto dto) {
+  }
+
+  public void deleteArticle(long articleId) {
   }
 }
