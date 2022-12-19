@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -17,7 +18,7 @@ import lombok.ToString;
 import lombok.ToString.Exclude;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
     @Index(columnList = "createdAt"),
     @Index(columnList = "title")
@@ -33,6 +34,10 @@ public class Article extends AuditingFields {
   private String content;
 
   @Setter
+  @ManyToOne(optional = false)
+  private Account account;
+
+  @Setter
   private String tag;
 
   @OrderBy("createdAt DESC")
@@ -46,14 +51,15 @@ public class Article extends AuditingFields {
   protected Article() {
   }
 
-  private Article(String title, String content, String tag) {
+  private Article(String title, String content, Account account, String tag) {
     this.title = title;
     this.content = content;
+    this.account = account;
     this.tag = tag;
   }
 
-  public static Article of(String title, String content, String tag) {
-    return new Article(title, content, tag);
+  public static Article of(String title, String content, Account account, String tag) {
+    return new Article(title, content, account, tag);
   }
 
   /**

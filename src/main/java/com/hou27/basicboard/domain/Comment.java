@@ -15,7 +15,7 @@ import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
     @Index(columnList = "createdAt"),
     @Index(columnList = "content")
@@ -29,6 +29,10 @@ public class Comment extends AuditingFields {
   @Setter
   @ManyToOne(optional = false) // no cascade
   private Article article;
+
+  @Setter
+  @ManyToOne(optional = false)
+  private Account account;
 
   /**
    * Constructor

@@ -29,7 +29,7 @@ public class DataRestTest {
 
   @DisplayName("[api] GET /api/articles")
   @Test
-  void getArticlesTest() throws Exception {
+  void getArticles() throws Exception {
     // Given
 
     // When & Then
