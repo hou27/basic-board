@@ -6,8 +6,8 @@ import static org.mockito.BDDMockito.*;
 
 import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
-import com.hou27.basicboard.dto.ArticleUpdateDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -23,9 +23,11 @@ import org.springframework.data.domain.Page;
 class ArticleServiceTest {
 
   // Mock을 주입받는 대상
-  @InjectMocks private ArticleService sut; // system under test
+  @InjectMocks
+  private ArticleService sut; // system under test
   // 나머지는 Mock으로 생성
-  @Mock private ArticleRepository articleRepository;
+  @Mock
+  private ArticleRepository articleRepository;
 
 
   // 검색
@@ -62,7 +64,13 @@ class ArticleServiceTest {
     given(articleRepository.save(any(Article.class))).willReturn(null);
 
     // When
-    sut.saveArticle(ArticleDto.of(LocalDateTime.now(), "hou27", "title", "content", "#java"));
+    sut.saveArticle(ArticleDto.of(
+            "title",
+            "content",
+            createAccountDto(),
+            "#java"
+        )
+    );
 
     // Then
     then(articleRepository).should().save(any(Article.class));
@@ -75,7 +83,7 @@ class ArticleServiceTest {
     given(articleRepository.save(any(Article.class))).willReturn(null);
 
     // When
-    sut.updateArticle(1L, ArticleUpdateDto.of("title", "content", "#java"));
+    sut.updateArticle(1L, ArticleDto.of("title", "content", createAccountDto(), "#java"));
 
     // Then
     then(articleRepository).should().save(any(Article.class));
@@ -92,5 +100,16 @@ class ArticleServiceTest {
 
     // Then
     then(articleRepository).should().delete(any(Article.class));
+  }
+
+  private AccountDto createAccountDto() {
+    return AccountDto.of(
+        1L,
+        "password",
+        "tester@mail.com",
+        "hou27",
+        LocalDateTime.now(),
+        LocalDateTime.now()
+    );
   }
 }

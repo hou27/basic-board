@@ -1,6 +1,8 @@
 package com.hou27.basicboard.domain;
 
 import com.hou27.basicboard.domain.base.AuditingFields;
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -87,4 +89,5 @@ public class Article extends AuditingFields {
   public int hashCode() {
     return Objects.hash(this.getId());
   }
+
 }

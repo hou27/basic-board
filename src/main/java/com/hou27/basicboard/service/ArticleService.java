@@ -3,7 +3,6 @@ package com.hou27.basicboard.service;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.ArticleCommentDto;
 import com.hou27.basicboard.dto.ArticleDto;
-import com.hou27.basicboard.dto.ArticleUpdateDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,7 @@ public class ArticleService {
   public void saveArticle(ArticleDto dto) {
   }
 
-  public void updateArticle(long articleId, ArticleUpdateDto dto) {
+  public void updateArticle(long articleId, ArticleDto dto) {
   }
 
   public void deleteArticle(long articleId) {
