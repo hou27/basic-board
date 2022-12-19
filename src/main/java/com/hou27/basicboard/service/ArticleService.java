@@ -42,6 +42,7 @@ public class ArticleService {
 @Service
 class ArticleCommentService {
 
+  @Transactional(readOnly = true)
   public List<ArticleCommentDto> searchArticleComments(Long articleId) {
     return null;
   }
