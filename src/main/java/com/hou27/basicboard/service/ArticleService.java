@@ -1,15 +1,18 @@
 package com.hou27.basicboard.service;
 
 import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.dto.ArticleCommentDto;
 import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.dto.ArticleUpdateDto;
 import com.hou27.basicboard.repository.ArticleRepository;
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ArticleService {
   private final ArticleRepository articleRepository;
@@ -31,5 +34,24 @@ public class ArticleService {
   }
 
   public void deleteArticle(long articleId) {
+  }
+}
+
+@RequiredArgsConstructor
+@Transactional
+@Service
+class ArticleCommentService {
+
+  public List<ArticleCommentDto> searchArticleComments(Long articleId) {
+    return null;
+  }
+
+  public void saveArticleComment(ArticleCommentDto dto) {
+  }
+
+  public void updateArticleComment(ArticleCommentDto dto) {
+  }
+
+  public void deleteArticleComment(Long articleCommentId) {
   }
 }

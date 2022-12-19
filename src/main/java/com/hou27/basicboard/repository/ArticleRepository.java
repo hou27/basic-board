@@ -21,13 +21,13 @@ public interface ArticleRepository
   @Override
   default void customize(QuerydslBindings bindings, QArticle root) {
     bindings.excludeUnlistedProperties(true); // 미리 정의하지 않은 검색 조건은 무시
-    bindings.including(root.title, root.content, root.tag); // 검색 조건으로 사용할 필드를 지정
+    bindings.including(root.title, root.content, root.hashtag); // 검색 조건으로 사용할 필드를 지정
 
     // 현재 exact match만 지원하므로, contains로 변경
 //    bindings.bind(root.title).first((path, value) -> path.contains(value));
     bindings.bind(root.title).first(StringExpression::containsIgnoreCase); // lambda expression
     bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
-    bindings.bind(root.tag).first(StringExpression::containsIgnoreCase);
+    bindings.bind(root.hashtag).first(StringExpression::containsIgnoreCase);
 //    bindings.bind(root.createdAt).first(DateTimeExpression::eq); // 날짜 검색
 
     /**

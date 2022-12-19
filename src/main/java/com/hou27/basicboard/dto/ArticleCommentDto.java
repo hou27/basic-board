@@ -1,34 +1,34 @@
 package com.hou27.basicboard.dto;
 
-public record CommentDto(
+import com.hou27.basicboard.domain.Article;
+import com.hou27.basicboard.domain.Comment;
+import java.time.LocalDateTime;
+
+public record ArticleCommentDto(
     Long id,
     Long articleId,
-    UserAccountDto userAccountDto,
+    AccountDto userAccountDto,
     String content,
     LocalDateTime createdAt,
-    String createdBy,
-    LocalDateTime modifiedAt,
-    String modifiedBy
+    LocalDateTime modifiedAt
 ) {
-  public static ArticleCommentDto of(Long id, Long articleId, UserAccountDto userAccountDto, String content, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
-    return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, createdBy, modifiedAt, modifiedBy);
+  public static ArticleCommentDto of(Long id, Long articleId, AccountDto userAccountDto, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, modifiedAt);
   }
 
-  public static ArticleCommentDto from(ArticleComment entity) {
+  public static ArticleCommentDto from(Comment entity) {
     return new ArticleCommentDto(
         entity.getId(),
         entity.getArticle().getId(),
-        UserAccountDto.from(entity.getUserAccount()),
+        AccountDto.from(entity.getAccount()),
         entity.getContent(),
         entity.getCreatedAt(),
-        entity.getCreatedBy(),
-        entity.getModifiedAt(),
-        entity.getModifiedBy()
+        entity.getModifiedAt()
     );
   }
 
-  public ArticleComment toEntity(Article entity) {
-    return ArticleComment.of(
+  public Comment toEntity(Article entity) {
+    return Comment.of(
         entity,
         userAccountDto.toEntity(),
         content

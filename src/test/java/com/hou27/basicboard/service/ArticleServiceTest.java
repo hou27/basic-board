@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 
-
+@DisplayName("Article Service Test")
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
