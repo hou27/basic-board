@@ -73,14 +73,14 @@ class JpaRepositoryTest {
     // Given
     Article article = articleRepository.findById(1L).orElseThrow();
     String updatedTag = "#springboot";
-    article.setTag(updatedTag);
+    article.setHashtag(updatedTag);
 
     // When
     // saveAndFlush: DB에 반영(Transactional이기 때문에 그냥 save를 하면 Update 쿼리는 생략되므로 flush를 해줘야함)
     Article savedArticle = articleRepository.saveAndFlush(article);
 
     // Then
-    assertThat(savedArticle).hasFieldOrPropertyWithValue("tag", updatedTag);
+    assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updatedTag);
   }
 
   @DisplayName("delete Test")
