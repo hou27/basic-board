@@ -140,13 +140,14 @@ class ArticleServiceTest {
   @Test
   void givenArticleId_whenDeletingArticle_thenDeletesArticle() {
     // Given
-    willDoNothing().given(articleRepository).delete(any(Article.class));
+    Long articleId = 1L;
+    willDoNothing().given(articleRepository).deleteById(any(Long.class));
 
     // When
-    sut.deleteArticle(1L);
+    sut.deleteArticle(articleId);
 
     // Then
-    then(articleRepository).should().delete(any(Article.class));
+    then(articleRepository).should().deleteById(articleId);
   }
 
   private AccountDto createAccountDto() {

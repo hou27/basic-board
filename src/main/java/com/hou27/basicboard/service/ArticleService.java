@@ -97,6 +97,12 @@ public class ArticleService {
   }
 
   public void deleteArticle(long articleId) {
+    try {
+      articleRepository.deleteById(articleId);
+    } catch (EntityNotFoundException e) {
+      log.warn("Article Not Found");
+      throw e;
+    }
   }
 }
 
