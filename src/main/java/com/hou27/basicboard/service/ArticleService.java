@@ -10,12 +10,14 @@ import com.hou27.basicboard.repository.ArticleRepository;
 import com.hou27.basicboard.repository.AccountRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -89,8 +91,8 @@ public class ArticleService {
       // transaction 종료 시 영속성 컨텍스트에 있는 엔티티의 수정 사항을 자동으로 DB에 반영하므로 save() 메서드를 호출할 필요가 없다.
 //      articleRepository.save(article);
     } catch (EntityNotFoundException e) {
-      // throw e;
-      throw new EntityNotFoundException("Article Not Found");
+      log.warn("Article Not Found");
+      throw e;
     }
   }
 
