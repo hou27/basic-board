@@ -1,5 +1,6 @@
 package com.hou27.basicboard.service;
 
+import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.domain.Account;
 import com.hou27.basicboard.dto.ArticleCommentDto;
@@ -78,7 +79,19 @@ public class ArticleService {
     articleRepository.save(dto.toEntity(account));
   }
 
-  public void updateArticle(long articleId, ArticleDto dto) {
+  public void updateArticle(ArticleDto dto) {
+    try {
+      Article article = articleRepository.getReferenceById(dto.id());
+      if (dto.title() != null) { article.setTitle(dto.title()); }
+      if (dto.content() != null) { article.setContent(dto.content()); }
+      article.setHashtag(dto.hashtag());
+
+      // transaction 종료 시 영속성 컨텍스트에 있는 엔티티의 수정 사항을 자동으로 DB에 반영하므로 save() 메서드를 호출할 필요가 없다.
+//      articleRepository.save(article);
+    } catch (EntityNotFoundException e) {
+      // throw e;
+      throw new EntityNotFoundException("Article Not Found");
+    }
   }
 
   public void deleteArticle(long articleId) {

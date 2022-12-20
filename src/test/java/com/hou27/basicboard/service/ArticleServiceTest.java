@@ -119,15 +119,21 @@ class ArticleServiceTest {
 
   @DisplayName("게시글의 ID와 수정 정보를 입력하면, 게시글을 수정한다")
   @Test
-  void givenArticleIdAndModifiedInfo_whenUpdatingArticle_thenUpdatesArticle() {
+  void givenModifiedInfo_whenUpdatingArticle_thenUpdatesArticle() {
     // Given
-    given(articleRepository.save(any(Article.class))).willReturn(null);
+    Article article = createArticle();
+    ArticleDto articleDto = createArticleDto("updated title", "updated content", "#update");
+    given(articleRepository.getReferenceById(articleDto.id())).willReturn(article);
 
     // When
-    sut.updateArticle(1L, ArticleDto.of("title", "content", createAccountDto(), "#java"));
+    sut.updateArticle(articleDto);
 
     // Then
-    then(articleRepository).should().save(any(Article.class));
+    assertThat(article)
+        .hasFieldOrPropertyWithValue("title", articleDto.title())
+        .hasFieldOrPropertyWithValue("content", articleDto.content())
+        .hasFieldOrPropertyWithValue("hashtag", articleDto.hashtag());
+    then(articleRepository).should().getReferenceById(articleDto.id());
   }
 
   @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다")
