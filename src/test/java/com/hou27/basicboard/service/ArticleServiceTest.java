@@ -5,12 +5,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 import com.hou27.basicboard.domain.Article;
+import com.hou27.basicboard.domain.Account;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
+import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,7 @@ class ArticleServiceTest {
   @Nested
   @DisplayName("게시글을 검색하면, 게시글 리스트를 반환한다.")
   class searchTest {
+
     @DisplayName("검색어가 없는 경우엔 모든 게시글을 반환한다.")
     @Test
     void givenNothing_whenSearchingArticles_thenReturnsArticles() {
@@ -74,16 +77,23 @@ class ArticleServiceTest {
   }
 
   // 게시글 상세 페이지로 이동
-  @DisplayName("게시글을 조회하면, 게시글을 반환한다.")
+  @DisplayName("ID로 게시글을 조회하면, 게시글을 반환한다.")
   @Test
   void givenArticleId_whenSearchingArticle_thenReturnsArticle() {
     // Given
+    Long articleId = 1L;
+    Article article = createArticle();
+    given(articleRepository.findById(articleId)).willReturn(Optional.of(article));
 
     // When
-    ArticleDto articles = sut.searchArticle(1L);
+    ArticleWithCommentsDto articleWithComments = sut.getArticle(articleId);
 
     // Then
-    assertThat(articles).isNotNull();
+    assertThat(articleWithComments)
+        .hasFieldOrPropertyWithValue("title", article.getTitle())
+        .hasFieldOrPropertyWithValue("content", article.getContent())
+        .hasFieldOrPropertyWithValue("hashtag", article.getHashtag());
+    then(articleRepository).should().findById(articleId);
   }
 
   @DisplayName("게시글 정보를 입력하면, 게시글을 생성한다")
@@ -139,6 +149,39 @@ class ArticleServiceTest {
         "hou27",
         LocalDateTime.now(),
         LocalDateTime.now()
+    );
+  }
+
+  private Account createAccount() {
+    return Account.of(
+        "test@email.com",
+        "hou27",
+        "password"
+    );
+  }
+
+  private Article createArticle() {
+    return Article.of(
+        "title",
+        "content",
+        createAccount(),
+        "#java"
+    );
+  }
+
+  private ArticleDto createArticleDto() {
+    return createArticleDto("title", "content", "#java");
+  }
+
+  private ArticleDto createArticleDto(String title, String content, String hashtag) {
+    return ArticleDto.of(
+        1L,
+        LocalDateTime.now(),
+        LocalDateTime.now(),
+        title,
+        content,
+        createAccountDto(),
+        hashtag
     );
   }
 }

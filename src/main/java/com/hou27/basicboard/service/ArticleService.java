@@ -3,8 +3,10 @@ package com.hou27.basicboard.service;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.ArticleCommentDto;
 import com.hou27.basicboard.dto.ArticleDto;
+import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -61,8 +63,10 @@ public class ArticleService {
   }
 
   @Transactional(readOnly = true)
-  public ArticleDto searchArticle(long id) {
-    return articleRepository.findById(id).map(ArticleDto::from).orElse(null);
+  public ArticleWithCommentsDto getArticle(Long articleId) {
+    return articleRepository.findById(articleId)
+        .map(ArticleWithCommentsDto::from)
+        .orElseThrow(() -> new EntityNotFoundException("Article Not Found"));
   }
 
   public void saveArticle(ArticleDto dto) {
