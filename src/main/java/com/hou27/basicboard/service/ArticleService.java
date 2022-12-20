@@ -1,10 +1,12 @@
 package com.hou27.basicboard.service;
 
 import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.domain.Account;
 import com.hou27.basicboard.dto.ArticleCommentDto;
 import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.repository.ArticleRepository;
+import com.hou27.basicboard.repository.AccountRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
   private final ArticleRepository articleRepository;
+  private final AccountRepository accountRepository;
 
   @Transactional(readOnly = true) // 조회만 하는 메서드에는 readOnly = true -> memory 사용량 최적화
   public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
@@ -70,6 +73,9 @@ public class ArticleService {
   }
 
   public void saveArticle(ArticleDto dto) {
+    Account account = accountRepository./*findById*/getReferenceById(dto.accountDto().userId());
+//        .orElseThrow(() -> new EntityNotFoundException("Account Not Found"));
+    articleRepository.save(dto.toEntity(account));
   }
 
   public void updateArticle(long articleId, ArticleDto dto) {

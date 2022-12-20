@@ -10,6 +10,7 @@ import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;
+import com.hou27.basicboard.repository.AccountRepository;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,6 +34,8 @@ class ArticleServiceTest {
   // 나머지는 Mock으로 생성
   @Mock
   private ArticleRepository articleRepository;
+  @Mock
+  private AccountRepository accountRepository;
 
 
   // 검색
@@ -100,18 +103,17 @@ class ArticleServiceTest {
   @Test
   void givenArticleInfo_whenSavingArticle_thenSavesArticle() {
     // Given
-    given(articleRepository.save(any(Article.class))).willReturn(null);
+    Article article = createArticle();
+    ArticleDto articleDto = createArticleDto();
+//    given(accountRepository.findById(any())).willReturn(Optional.of(article.getAccount()));
+    given(accountRepository.getReferenceById(any())).willReturn(article.getAccount());
+    given(articleRepository.save(any(Article.class))).willReturn(article);
 
     // When
-    sut.saveArticle(ArticleDto.of(
-            "title",
-            "content",
-            createAccountDto(),
-            "#java"
-        )
-    );
+    sut.saveArticle(articleDto);
 
     // Then
+    then(accountRepository).should().getReferenceById(articleDto.accountDto().userId());
     then(articleRepository).should().save(any(Article.class));
   }
 
