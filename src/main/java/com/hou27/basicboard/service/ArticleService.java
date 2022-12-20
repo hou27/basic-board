@@ -31,17 +31,6 @@ public class ArticleService {
       return articleRepository.findAll(pageable).map(ArticleDto::from);
     }
 
-//    switch (searchType) {
-//      case TITLE:
-//        return articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::from);
-//      case CONTENT:
-//        return articleRepository.findByContentContaining(searchKeyword, pageable).map(ArticleDto::from);
-//      case TITLE_AND_CONTENT:
-//        return articleRepository.findByTitleContainingOrContentContaining(searchKeyword, searchKeyword, pageable).map(ArticleDto::from);
-//      default:
-//        return articleRepository.findAll(pageable).map(ArticleDto::from);
-//    }
-
     switch (searchType) {
       case TITLE -> {
         return articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::from);

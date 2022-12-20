@@ -5,37 +5,37 @@ import java.time.LocalDateTime;
 
 public record AccountDto(
     Long userId,
-    String userPassword,
+    LocalDateTime createdAt,
+    LocalDateTime modifiedAt,
     String email,
     String name,
-    LocalDateTime createdAt,
-    LocalDateTime modifiedAt
+    String userPassword
 ) {
 
-  public static AccountDto of(Long userId, String userPassword, String email, String name) {
-    return new AccountDto(userId, userPassword, email, name, null, null);
+  public static AccountDto of(Long userId, String email, String name, String userPassword) {
+    return new AccountDto(userId, null, null, email, name, userPassword);
   }
 
-  public static AccountDto of(Long userId, String userPassword, String email, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-    return new AccountDto(userId, userPassword, email, name, createdAt, modifiedAt);
+  public static AccountDto of(Long userId, LocalDateTime createdAt, LocalDateTime modifiedAt, String email, String name, String userPassword) {
+    return new AccountDto(userId, createdAt, modifiedAt, email, name, userPassword);
   }
 
   public static AccountDto from(Account entity) {
     return new AccountDto(
         entity.getId(),
-        entity.getPassword(),
+        entity.getCreatedAt(),
+        entity.getModifiedAt(),
         entity.getEmail(),
         entity.getName(),
-        entity.getCreatedAt(),
-        entity.getModifiedAt()
+        entity.getPassword()
     );
   }
 
   public Account toEntity() {
     return Account.of(
-        userPassword,
         email,
-        name
+        name,
+        userPassword
     );
   }
 
