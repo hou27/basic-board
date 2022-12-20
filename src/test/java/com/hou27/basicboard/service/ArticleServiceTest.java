@@ -10,13 +10,16 @@ import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.repository.ArticleRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @DisplayName("Article Service Test")
 @ExtendWith(MockitoExtension.class)
@@ -31,18 +34,44 @@ class ArticleServiceTest {
 
 
   // 검색
+  @Nested
   @DisplayName("게시글을 검색하면, 게시글 리스트를 반환한다.")
-  @Test
-  void givenSearchParameters_whenSearchingArticles_thenReturnsArticleList() {
-    // Given
+  class searchTest {
+    @DisplayName("검색어가 없는 경우엔 모든 게시글을 반환한다.")
+    @Test
+    void givenNothing_whenSearchingArticles_thenReturnsArticles() {
+      // Given
+      Pageable pageable = Pageable.ofSize(10);
+      Page<Article> expected = Page.empty();
+      given(articleRepository.findAll(pageable)).willReturn(expected);
 
-    // When
-    Page<ArticleDto> articles = sut.searchArticles(SearchType.TITLE, "search keyword");
+      // When
+      Page<ArticleDto> actual = sut.searchArticles(null, null, pageable);
 
-    // Then
-    assertThat(articles).isNotNull();
+      // Then
+      assertThat(actual).isEqualTo(expected);
+      then(articleRepository).should().findAll(pageable);
+    }
+
+    @DisplayName("검색어가 있는 경우엔 해당 게시글을 반환한다.")
+    @Test
+    void givenSearchTypeAndKeyword_whenSearchingArticles_thenReturnsArticles() {
+      // Given
+      SearchType searchType = SearchType.TITLE;
+      String searchKeyword = "searchKeyword";
+      Pageable pageable = Pageable.ofSize(10);
+      Page<Article> expected = Page.empty();
+      given(articleRepository.findByTitleContaining(searchKeyword, pageable)).willReturn(expected);
+
+      // When
+      Page<ArticleDto> actual = sut.searchArticles(searchType, searchKeyword, pageable);
+
+      // Then
+//      assertThat(actual).isEmpty();
+      assertThat(actual).isEqualTo(expected);
+      then(articleRepository).should().findByTitleContaining(searchKeyword, pageable);
+    }
   }
-
 
   // 게시글 상세 페이지로 이동
   @DisplayName("게시글을 조회하면, 게시글을 반환한다.")
