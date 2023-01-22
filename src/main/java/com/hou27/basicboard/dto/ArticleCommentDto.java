@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 public record ArticleCommentDto(
     Long id,
     Long articleId,
-    AccountDto userAccountDto,
+    AccountDto accountDto,
     String content,
     LocalDateTime createdAt,
     LocalDateTime modifiedAt
 ) {
-  public static ArticleCommentDto of(Long id, Long articleId, AccountDto userAccountDto, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-    return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, modifiedAt);
+  public static ArticleCommentDto of(Long id, Long articleId, AccountDto accountDto, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    return new ArticleCommentDto(id, articleId, accountDto, content, createdAt, modifiedAt);
   }
 
   public static ArticleCommentDto from(Comment entity) {
@@ -30,7 +30,7 @@ public record ArticleCommentDto(
   public Comment toEntity(Article entity) {
     return Comment.of(
         entity,
-        userAccountDto.toEntity(),
+        accountDto.toEntity(),
         content
     );
   }

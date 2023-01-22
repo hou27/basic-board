@@ -17,8 +17,12 @@ public record ArticleWithCommentsDto(
     String content,
     String hashtag
 ) {
-  public static ArticleWithCommentsDto of(Long id, LocalDateTime createdAt, LocalDateTime modifiedAt, AccountDto accountDto, Set<ArticleCommentDto> articleCommentDtos, String title, String content, String hashtag) {
-    return new ArticleWithCommentsDto(id, createdAt, modifiedAt, accountDto, articleCommentDtos, title, content, hashtag);
+
+  public static ArticleWithCommentsDto of(Long id, LocalDateTime createdAt,
+      LocalDateTime modifiedAt, AccountDto accountDto, Set<ArticleCommentDto> articleCommentDtos,
+      String title, String content, String hashtag) {
+    return new ArticleWithCommentsDto(id, createdAt, modifiedAt, accountDto, articleCommentDtos,
+        title, content, hashtag);
   }
 
   public static ArticleWithCommentsDto from(Article entity) {

@@ -2,6 +2,7 @@ package com.hou27.basicboard.controller;
 
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.res.ArticleResponse;
+import com.hou27.basicboard.dto.res.ArticleWithCommentsResponse;
 import com.hou27.basicboard.service.ArticleService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,9 @@ public class ArticleController {
     map.addAttribute(
         "articles",
         articleService.searchArticles(
-            searchType,
-            searchValue,
-            pageable)
+                searchType,
+                searchValue,
+                pageable)
             .map(ArticleResponse::from)
     );
 
@@ -42,9 +43,14 @@ public class ArticleController {
   }
 
   @GetMapping("/{articleId}")
-  public String articleDetail(@PathVariable Long articleId, Model map) {
-    map.addAttribute("article", "dummy"); // TODO: 추후 실제 데이터를 넣어줘야 함
-    map.addAttribute("comments", List.of());
+  public String articleDetail(
+      @PathVariable Long articleId,
+      Model map
+  ) {
+    ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(
+        articleService.getArticle(articleId));
+    map.addAttribute("article", article);
+    map.addAttribute("comments", article.commentsResponse());
 
     return "articles/detail";
   }
