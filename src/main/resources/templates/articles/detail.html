@@ -14,23 +14,23 @@
 
 <header th:replace="header :: header"></header>
 
-<main class="container">
-  <header class="py-5 text-center">
+<main id="article-main" class="container" th:object="${article}">
+  <header id="article-header" class="py-5 text-center" th:text="*{title}">
     <h1>첫번째 글</h1>
   </header>
 
   <div class="row g-5">
     <section class="col-md-5 col-lg-4 order-md-last">
       <aside>
-        <p><span class="nick-name">hou</span></p>
-        <p><a class="u-url" rel="me" href="mailto:test@gmail.com">test@gmail.com</a></p>
-        <p><time datetime="2022-01-01T00:00:00">2022-01-01</time></p>
-        <p>#java</p>
+        <p><span id="name" th:text="*{name}">hou</span></p>
+        <p><a id="email" href="mailto:djkehh@gmail.com" th:text="*{email}">hou@mail.com</a></p>
+        <p><time id="created-at" datetime="2022-01-01T00:00:00" th:datetime="*{createdAt}" th:text="*{#temporals.format(createdAt, 'yyyy-MM-dd HH:mm:ss')}">2022-01-01</time></p>
+        <p><span id="hashtag" th:text="*{hashtag}">#java</span></p>
       </aside>
     </section>
 
-    <article class="col-md-7 col-lg-8">
-      <p>본문<br><br></p>
+    <article id="article-content" class="col-md-7 col-lg-8" th:text="*{hashtag}">
+      <pre>본문<br><br></pre>
     </article>
   </div>
 
@@ -47,22 +47,12 @@
         </div>
       </form>
 
-      <ul>
-        <li>
+      <ul id="article-comments" class="row col-7" th:remove="all-but-first">
+        <li th:each="articleComment : ${comments}">
           <div>
-            <time><small>2022-01-01</small></time>
-            <strong>hou</strong>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
-              Lorem ipsum dolor sit amet
-            </p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <time><small>2022-01-01</small></time>
-            <strong>hou</strong>
-            <p>
+            <strong th:text="${comment.name}">hou</strong>
+            <small><time th:datetime="${comment.createdAt}" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2022-01-01</time></small>
+            <p th:text="${comment.content}">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
               Lorem ipsum dolor sit amet
             </p>
