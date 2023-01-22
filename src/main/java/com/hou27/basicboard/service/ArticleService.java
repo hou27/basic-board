@@ -45,9 +45,6 @@ public class ArticleService {
         // parse searchKeyword to Long
         return articleRepository.findByAccount_IdContaining(Long.parseLong(searchKeyword), pageable).map(ArticleDto::from);
       }
-      case NAME -> {
-        return articleRepository.findByNameContaining(searchKeyword, pageable).map(ArticleDto::from);
-      }
       case HASHTAG -> {
         return articleRepository.findByHashtag(searchKeyword, pageable).map(ArticleDto::from);
       }

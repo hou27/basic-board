@@ -24,7 +24,6 @@ public interface ArticleRepository
   Page<Article> findByContentContaining(String content, Pageable pageable);
   Page<Article> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
   Page<Article> findByAccount_IdContaining(Long id, Pageable pageable);
-  Page<Article> findByNameContaining(String name, Pageable pageable);
   Page<Article> findByHashtag(String hashtag, Pageable pageable);
 
   @Override
