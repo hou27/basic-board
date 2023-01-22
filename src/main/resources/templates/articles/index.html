@@ -64,23 +64,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>첫글</td>
-      <td>#java</td>
-      <td>hou27</td>
-      <td>2022-01-01</td>
-    </tr>
-    <tr>
-      <td>두번째글</td>
-      <td>#spring</td>
-      <td>hou27</td>
-      <td>2022-01-02</td>
-    </tr>
-    <tr>
-      <td>세번째글</td>
-      <td>#java</td>
-      <td>hou27</td>
-      <td>2022-01-03</td>
+    <tr th:each="article : ${articles}">
+      <td th:text="${article.title}">첫글</td>
+      <td th:text="${article.hashtag}">#java</td>
+      <td th:text="${article.name}">hou</td>
+      <td th:text="${article.createdAt}">2022-01-01</td>
     </tr>
     </tbody>
   </table>
