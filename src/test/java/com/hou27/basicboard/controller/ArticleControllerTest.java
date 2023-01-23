@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.hou27.basicboard.config.SecurityConfig;
+import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.service.ArticleService;
@@ -57,7 +58,8 @@ class ArticleControllerTest {
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
         .andExpect(view().name("articles/index"))
         .andExpect(model().attributeExists("articles"))
-        .andExpect(model().attributeExists("paginationBarNumbers"));
+        .andExpect(model().attributeExists("paginationBarNumbers"))
+        .andExpect(model().attributeExists("searchTypes"));
     then(articleService).should().searchArticles(eq(null), eq(null), any(Pageable.class));
   }
 
@@ -77,21 +79,30 @@ class ArticleControllerTest {
         .andExpect(model().attributeExists("comments"));
     then(articleService).should().getArticle(articleId);
   }
-
-  @Disabled("구현 중")
+  
   @DisplayName("[view] GET 게시글 검색 페이지 - 정상 호출되어야 한다.")
   @Test
   public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView()
       throws Exception {
     // Given
-    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(
-        Page.empty());
+    SearchType searchType = SearchType.TITLE;
+    String searchValue = "title";
+    given(articleService.searchArticles(eq(searchType), eq(searchValue), any(Pageable.class))).willReturn(Page.empty());
+    given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0, 1, 2, 3, 4));
 
     // When & Then
-    mvc.perform(get("/articles/search"))
+    mvc.perform(
+            get("/articles")
+                .queryParam("searchType", searchType.name())
+                .queryParam("searchValue", searchValue)
+        )
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-        .andExpect(model().attributeExists("articles/search"));
+        .andExpect(view().name("articles/index"))
+        .andExpect(model().attributeExists("articles"))
+        .andExpect(model().attributeExists("searchTypes"));
+    then(articleService).should().searchArticles(eq(searchType), eq(searchValue), any(Pageable.class));
+    then(paginationService).should().getPaginationBarNumbers(anyInt(), anyInt());
   }
 
   @Disabled("구현 중")
