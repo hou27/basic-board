@@ -9,7 +9,9 @@ import com.hou27.basicboard.config.SecurityConfig;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.service.ArticleService;
+import com.hou27.basicboard.service.PaginationService;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -27,10 +29,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
+
   private final MockMvc mvc;
 
   @MockBean
   private ArticleService articleService;
+
+  @MockBean
+  private PaginationService paginationService;
 
   public ArticleControllerTest(@Autowired MockMvc mvc) {
     this.mvc = mvc;
@@ -40,14 +46,18 @@ class ArticleControllerTest {
   @Test
   public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
     // given
-    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(Page.empty());
+    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(
+        Page.empty());
+    given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(
+        List.of(1, 2, 3, 4, 5));
 
     // when & then
     mvc.perform(get("/articles"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
         .andExpect(view().name("articles/index"))
-        .andExpect(model().attributeExists("articles"));
+        .andExpect(model().attributeExists("articles"))
+        .andExpect(model().attributeExists("paginationBarNumbers"));
     then(articleService).should().searchArticles(eq(null), eq(null), any(Pageable.class));
   }
 
@@ -71,9 +81,11 @@ class ArticleControllerTest {
   @Disabled("구현 중")
   @DisplayName("[view] GET 게시글 검색 페이지 - 정상 호출되어야 한다.")
   @Test
-  public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView() throws Exception {
+  public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView()
+      throws Exception {
     // Given
-    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(Page.empty());
+    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(
+        Page.empty());
 
     // When & Then
     mvc.perform(get("/articles/search"))
@@ -85,7 +97,8 @@ class ArticleControllerTest {
   @Disabled("구현 중")
   @DisplayName("[view] GET 게시글 태그 검색 페이지 - 정상 호출되어야 한다.")
   @Test
-  public void givenNothing_whenRequestingArticleTagSearchView_thenReturnsArticleTagSearchView() throws Exception {
+  public void givenNothing_whenRequestingArticleTagSearchView_thenReturnsArticleTagSearchView()
+      throws Exception {
     // Given
 
     // When & Then
