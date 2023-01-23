@@ -79,7 +79,7 @@ class ArticleControllerTest {
         .andExpect(model().attributeExists("comments"));
     then(articleService).should().getArticle(articleId);
   }
-  
+
   @DisplayName("[view] GET 게시글 검색 페이지 - 정상 호출되어야 한다.")
   @Test
   public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView()

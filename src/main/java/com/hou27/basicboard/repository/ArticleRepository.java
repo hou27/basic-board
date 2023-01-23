@@ -5,6 +5,7 @@ import com.hou27.basicboard.domain.QArticle;
 import com.jayway.jsonpath.JsonPath;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
+import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,7 @@ public interface ArticleRepository
   Page<Article> findByTitleContaining(String title, Pageable pageable);
   Page<Article> findByContentContaining(String content, Pageable pageable);
   Page<Article> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
-  Page<Article> findByAccount_IdContaining(Long id, Pageable pageable);
+  Page<Article> findByAccount_NameContaining(String searchKeyword, Pageable pageable);
   Page<Article> findByHashtag(String hashtag, Pageable pageable);
 
   @Override
