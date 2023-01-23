@@ -75,7 +75,7 @@
       <td ><a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}">첫글</a></td>
       <td th:text="${article.hashtag}">#java</td>
       <td th:text="${article.name}">hou</td>
-      <td th:text="${article.createdAt}">2022-01-01</td>
+      <td th:text="*{#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2022-01-01</td>
     </tr>
     </tbody>
   </table>
