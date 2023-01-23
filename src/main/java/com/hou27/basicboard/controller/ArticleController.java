@@ -58,11 +58,11 @@ public class ArticleController {
 
   @GetMapping("/search-by-hashtag")
   public String searchByHashtag(
-      @RequestParam(required = false) String hashtag,
+      @RequestParam(required = false) String searchValue,
       @PageableDefault(size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable,
       Model map
   ) {
-    Page<ArticleResponse> articles = articleService.searchArticles(SearchType.HASHTAG, hashtag, pageable).map(ArticleResponse::from);
+    Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
     List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
     List<String> hashtags = articleService.getHashtags();
 
