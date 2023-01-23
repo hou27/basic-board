@@ -1,7 +1,7 @@
 package com.hou27.basicboard.service;
 
 import com.hou27.basicboard.domain.Article;
-import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.domain.constant.SearchType;
 import com.hou27.basicboard.domain.Account;
 import com.hou27.basicboard.dto.ArticleCommentDto;
 import com.hou27.basicboard.dto.ArticleDto;
@@ -55,10 +55,17 @@ public class ArticleService {
   }
 
   @Transactional(readOnly = true)
-  public ArticleWithCommentsDto getArticle(Long articleId) {
+  public ArticleWithCommentsDto getArticleWithComments(Long articleId) {
     return articleRepository.findById(articleId)
         .map(ArticleWithCommentsDto::from)
-        .orElseThrow(() -> new EntityNotFoundException("Article Not Found"));
+        .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+  }
+
+  @Transactional(readOnly = true)
+  public ArticleDto getArticle(Long articleId) {
+    return articleRepository.findById(articleId)
+        .map(ArticleDto::from)
+        .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
   }
 
   public void saveArticle(ArticleDto dto) {
