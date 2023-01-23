@@ -2,9 +2,11 @@ package com.hou27.basicboard.repository;
 
 import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.QArticle;
+import com.hou27.basicboard.repository.querydsl.ArticleCustomRepository;
 import com.jayway.jsonpath.JsonPath;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
+import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,13 +19,14 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface ArticleRepository
     extends
     JpaRepository<Article, Long>,
+    ArticleCustomRepository,
     QuerydslPredicateExecutor<Article>, // Entity의 필드를 이용해 검색 조건을 만들 수 있도록 해줌(기본 검색)
     QuerydslBinderCustomizer<QArticle>  // Querydsl을 이용해 동적 검색을 할 수 있도록 해줌
 {
   Page<Article> findByTitleContaining(String title, Pageable pageable);
   Page<Article> findByContentContaining(String content, Pageable pageable);
   Page<Article> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
-  Page<Article> findByAccount_IdContaining(Long id, Pageable pageable);
+  Page<Article> findByAccount_NameContaining(String searchKeyword, Pageable pageable);
   Page<Article> findByHashtag(String hashtag, Pageable pageable);
 
   @Override
