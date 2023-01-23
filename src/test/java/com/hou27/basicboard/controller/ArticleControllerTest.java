@@ -1,20 +1,17 @@
 package com.hou27.basicboard.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.hou27.basicboard.config.SecurityConfig;
-import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.domain.constant.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
-import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.service.ArticleService;
 import com.hou27.basicboard.service.PaginationService;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

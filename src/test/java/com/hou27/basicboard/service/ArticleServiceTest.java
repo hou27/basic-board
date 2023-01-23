@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 
 import com.hou27.basicboard.domain.Article;
 import com.hou27.basicboard.domain.Account;
-import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.domain.constant.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;

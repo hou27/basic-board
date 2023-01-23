@@ -1,6 +1,6 @@
 package com.hou27.basicboard.controller;
 
-import com.hou27.basicboard.domain.type.SearchType;
+import com.hou27.basicboard.domain.constant.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
 import com.hou27.basicboard.dto.res.ArticleResponse;
 import com.hou27.basicboard.dto.res.ArticleWithCommentsResponse;

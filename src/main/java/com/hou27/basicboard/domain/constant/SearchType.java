@@ -1,4 +1,4 @@
-package com.hou27.basicboard.domain.type;
+package com.hou27.basicboard.domain.constant;
 
 import lombok.Getter;
 
