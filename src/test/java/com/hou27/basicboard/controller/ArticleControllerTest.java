@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.hou27.basicboard.config.SecurityConfig;
 import com.hou27.basicboard.domain.type.SearchType;
 import com.hou27.basicboard.dto.AccountDto;
+import com.hou27.basicboard.dto.ArticleDto;
 import com.hou27.basicboard.dto.ArticleWithCommentsDto;
 import com.hou27.basicboard.service.ArticleService;
 import com.hou27.basicboard.service.PaginationService;
@@ -68,7 +69,7 @@ class ArticleControllerTest {
   public void givenNothing_whenRequestingArticleView_thenReturnsArticleView() throws Exception {
     // Given
     Long articleId = 1L;
-    given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+    given(articleService.getArticle(articleId)).willReturn(createArticleDto());
 
     // When & Then
     mvc.perform(get("/articles/1"))
@@ -119,15 +120,14 @@ class ArticleControllerTest {
         .andExpect(model().attributeExists("articles/search-tag"));
   }
 
-  private ArticleWithCommentsDto createArticleWithCommentsDto() {
-    return ArticleWithCommentsDto.of(
+  private ArticleDto createArticleDto() {
+    return ArticleDto.of(
         1L,
         LocalDateTime.now(),
         LocalDateTime.now(),
-        createAccountDto(),
-        Set.of(),
         "title",
         "content",
+        createAccountDto(),
         "#java"
     );
   }

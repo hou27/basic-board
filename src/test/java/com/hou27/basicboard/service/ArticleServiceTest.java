@@ -120,7 +120,7 @@ class ArticleServiceTest {
     given(articleRepository.findById(articleId)).willReturn(Optional.of(article));
 
     // When
-    ArticleWithCommentsDto articleWithComments = sut.getArticle(articleId);
+    ArticleWithCommentsDto articleWithComments = sut.getArticleWithComments(articleId);
 
     // Then
     assertThat(articleWithComments)
