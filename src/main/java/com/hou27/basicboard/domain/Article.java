@@ -1,6 +1,8 @@
 package com.hou27.basicboard.domain;
 
 import com.hou27.basicboard.domain.base.AuditingFields;
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +40,7 @@ public class Article extends AuditingFields {
   private Account account;
 
   @Setter
-  private String tag;
+  private String hashtag;
 
   @OrderBy("createdAt DESC")
   @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
@@ -51,15 +53,15 @@ public class Article extends AuditingFields {
   protected Article() {
   }
 
-  private Article(String title, String content, Account account, String tag) {
+  private Article(String title, String content, Account account, String hashtag) {
     this.title = title;
     this.content = content;
     this.account = account;
-    this.tag = tag;
+    this.hashtag = hashtag;
   }
 
-  public static Article of(String title, String content, Account account, String tag) {
-    return new Article(title, content, account, tag);
+  public static Article of(String title, String content, Account account, String hashtag) {
+    return new Article(title, content, account, hashtag);
   }
 
   /**

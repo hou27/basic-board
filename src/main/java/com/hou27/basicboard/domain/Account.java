@@ -23,7 +23,7 @@ public class Account extends AuditingFields {
   private String email;
 
   @Setter
-  @Column(length = 100)
+  @Column(length = 100, nullable = false)
   private String name;
 
   @Setter

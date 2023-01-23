@@ -1,16 +1,25 @@
 package com.hou27.basicboard.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.hou27.basicboard.config.SecurityConfig;
+import com.hou27.basicboard.dto.AccountDto;
+import com.hou27.basicboard.dto.ArticleWithCommentsDto;
+import com.hou27.basicboard.service.ArticleService;
+import java.time.LocalDateTime;
+import java.util.Set;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +29,9 @@ import org.springframework.test.web.servlet.MockMvc;
 class ArticleControllerTest {
   private final MockMvc mvc;
 
+  @MockBean
+  private ArticleService articleService;
+
   public ArticleControllerTest(@Autowired MockMvc mvc) {
     this.mvc = mvc;
   }
@@ -28,18 +40,23 @@ class ArticleControllerTest {
   @Test
   public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
     // given
+    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(Page.empty());
+
     // when & then
     mvc.perform(get("/articles"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
         .andExpect(view().name("articles/index"))
         .andExpect(model().attributeExists("articles"));
+    then(articleService).should().searchArticles(eq(null), eq(null), any(Pageable.class));
   }
 
   @DisplayName("[view] GET 게시글 상세 페이지 - 정상 호출되어야 한다.")
   @Test
   public void givenNothing_whenRequestingArticleView_thenReturnsArticleView() throws Exception {
     // Given
+    Long articleId = 1L;
+    given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
 
     // When & Then
     mvc.perform(get("/articles/1"))
@@ -48,6 +65,7 @@ class ArticleControllerTest {
         .andExpect(view().name("articles/detail"))
         .andExpect(model().attributeExists("article"))
         .andExpect(model().attributeExists("comments"));
+    then(articleService).should().getArticle(articleId);
   }
 
   @Disabled("구현 중")
@@ -55,6 +73,7 @@ class ArticleControllerTest {
   @Test
   public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView() throws Exception {
     // Given
+    given(articleService.searchArticles(eq(null), eq(null), any(Pageable.class))).willReturn(Page.empty());
 
     // When & Then
     mvc.perform(get("/articles/search"))
@@ -74,5 +93,27 @@ class ArticleControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
         .andExpect(model().attributeExists("articles/search-tag"));
+  }
+
+  private ArticleWithCommentsDto createArticleWithCommentsDto() {
+    return ArticleWithCommentsDto.of(
+        1L,
+        LocalDateTime.now(),
+        LocalDateTime.now(),
+        createAccountDto(),
+        Set.of(),
+        "title",
+        "content",
+        "#java"
+    );
+  }
+
+  private AccountDto createAccountDto() {
+    return AccountDto.of(
+        1L,
+        "test@mail.com",
+        "hou27",
+        "password"
+    );
   }
 }

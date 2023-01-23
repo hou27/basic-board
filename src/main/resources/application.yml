@@ -16,7 +16,7 @@ spring:
     password: ${LOCAL_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    open-in-view: false
+    open-in-view: false # osiv
     defer-datasource-initialization: true
     hibernate.ddl-auto: create
     show-sql: true

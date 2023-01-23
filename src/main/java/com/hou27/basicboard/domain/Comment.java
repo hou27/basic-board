@@ -40,13 +40,14 @@ public class Comment extends AuditingFields {
 //  protected Comment() {
 //  }
 
-  private Comment(String content, Article article) {
+  private Comment(String content, Article article, Account account) {
     this.content = content;
     this.article = article;
+    this.account = account;
   }
 
-  public static Comment of(String content, Article article) {
-    return new Comment(content, article);
+  public static Comment of(Article article, Account account, String content) {
+    return new Comment(content, article, account);
   }
 
   /**

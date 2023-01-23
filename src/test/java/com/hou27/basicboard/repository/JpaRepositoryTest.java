@@ -1,6 +1,5 @@
 package com.hou27.basicboard.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hou27.basicboard.config.JpaConfig;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
 @DisplayName("JpaRepository Test")
 @Import(JpaConfig.class)
@@ -21,12 +19,12 @@ import org.springframework.test.context.ActiveProfiles;
 class JpaRepositoryTest {
   // 생성자 주입 패턴을 통한 필드 생성
   private final ArticleRepository articleRepository;
-  private final CommentRepository commentRepository;
+  private final ArticleCommentRepository commentRepository;
   private final AccountRepository accountRepository;
 
   public JpaRepositoryTest(
       @Autowired ArticleRepository articleRepository,
-      @Autowired CommentRepository commentRepository,
+      @Autowired ArticleCommentRepository commentRepository,
       @Autowired AccountRepository accountRepository
   ) {
     this.articleRepository = articleRepository;
@@ -73,14 +71,14 @@ class JpaRepositoryTest {
     // Given
     Article article = articleRepository.findById(1L).orElseThrow();
     String updatedTag = "#springboot";
-    article.setTag(updatedTag);
+    article.setHashtag(updatedTag);
 
     // When
     // saveAndFlush: DB에 반영(Transactional이기 때문에 그냥 save를 하면 Update 쿼리는 생략되므로 flush를 해줘야함)
     Article savedArticle = articleRepository.saveAndFlush(article);
 
     // Then
-    assertThat(savedArticle).hasFieldOrPropertyWithValue("tag", updatedTag);
+    assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updatedTag);
   }
 
   @DisplayName("delete Test")
