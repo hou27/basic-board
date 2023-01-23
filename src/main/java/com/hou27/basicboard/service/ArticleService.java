@@ -90,6 +90,19 @@ public class ArticleService {
       throw e;
     }
   }
+
+  @Transactional(readOnly = true)
+  public Page<ArticleDto> searchArticlesViaHashtag(String hashtag, Pageable pageable) {
+    if (hashtag == null || hashtag.isBlank()) {
+      return Page.empty(pageable);
+    }
+
+    return articleRepository.findByHashtag(hashtag, pageable).map(ArticleDto::from);
+  }
+
+  public List<String> getHashtags() {
+    return articleRepository.findAllDistinctHashtags();
+  }
 }
 
 @RequiredArgsConstructor
