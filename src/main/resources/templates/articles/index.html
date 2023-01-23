@@ -61,13 +61,26 @@
     </div>
   </div>
 
-  <table class="table">
+  <table class="table" id="article-table">
     <thead>
-    <tr>
-      <th class="col-6">제목</th>
-      <th class="col-2">해시태그</th>
-      <th class="col">작성자</th>
-      <th class="col">작성일</th>
+    <tr th:object="${articles}">
+      <th class="title col-6">
+        <a th:href="@{/articles(
+            page=${articles.number},
+            sort='title' + (*{sort.getOrderFor('title')} != null ? (*{sort.getOrderFor('title').direction.name} != 'DESC' ? ',desc' : '') : ''))}">제목</a>
+      </th>
+      <th class="hashtag col-2"><a th:href="@{/articles(
+            page=${articles.number},
+            sort='hashtag' + (*{sort.getOrderFor('hashtag')} != null ? (*{sort.getOrderFor('hashtag').direction.name} != 'DESC' ? ',desc' : '') : ''))}">해시태그</a>
+      </th>
+      <th class="user-id col"><a
+          th:href="@{/articles(page=${articles.number},
+          sort='account.name' + (*{sort.getOrderFor('account.name')} != null ? (*{sort.getOrderFor('account.name').direction.name} != 'DESC' ? ',desc' : '') : '')
+        )}">작성자</a></th>
+      <th class="created-at col"><a th:href="@{/articles(
+            page=${articles.number},
+            sort='createdAt' + (*{sort.getOrderFor('createdAt')} != null ? (*{sort.getOrderFor('createdAt').direction.name} != 'DESC' ? ',desc' : '') : '')
+        )}">작성일</a></th>
     </tr>
     </thead>
     <tbody>
