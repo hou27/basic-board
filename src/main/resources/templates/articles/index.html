@@ -72,7 +72,7 @@
     </thead>
     <tbody>
     <tr th:each="article : ${articles}">
-      <td ><a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}">첫글</a></td>
+      <td><a th:href="@{'/articles/' + ${article.id}}" th:text="${article.title}">첫글</a></td>
       <td th:text="${article.hashtag}">#java</td>
       <td th:text="${article.name}">hou</td>
       <td th:text="*{#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2022-01-01</td>
@@ -80,13 +80,27 @@
     </tbody>
   </table>
 
-  <nav aria-label="Page navigation example">
+  <nav id="pagination" aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#"
+           th:href="@{/articles(page=${articles.number - 1})}"
+           th:class="'page-link' + (${articles.number} <= 0 ? ' disabled' : '')"
+        >Previous</a>
+      </li>
+      <li class="page-item" th:each="pageNumber : ${paginationBarNumbers}">
+        <a class="page-link" href="#"
+           th:text="${pageNumber + 1}"
+           th:href="@{/articles(page=${pageNumber})}"
+           th:class="'page-link' + (${pageNumber} == ${articles.number} ? ' disabled' : '')"
+        >1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#"
+           th:href="@{/articles(page=${articles.number + 1})}"
+           th:class="'page-link' + (${articles.number} >= ${articles.totalPages - 1} ? ' disabled' : '')"
+        >Next</a>
+      </li>
     </ul>
   </nav>
 </main>
