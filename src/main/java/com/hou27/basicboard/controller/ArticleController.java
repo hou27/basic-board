@@ -58,7 +58,7 @@ public class ArticleController {
 
   @GetMapping("/search-by-hashtag")
   public String searchByHashtag(
-      @RequestParam String hashtag,
+      @RequestParam(required = false) String hashtag,
       @PageableDefault(size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable,
       Model map
   ) {
@@ -67,10 +67,10 @@ public class ArticleController {
     List<String> hashtags = articleService.getHashtags();
 
     map.addAttribute("articles", articles);
-    map.addAttribute("hashTags", hashtags);
+    map.addAttribute("hashtags", hashtags);
     map.addAttribute("paginationBarNumbers", barNumbers);
-    map.addAttribute("searchTypes", SearchType.HASHTAG);
+    map.addAttribute("searchType", SearchType.HASHTAG);
 
-    return "articles/index";
+    return "articles/search-by-hashtag";
   }
 }
